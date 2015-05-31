@@ -32,7 +32,7 @@ end
 
 
 root = File.expand_path '..', __FILE__
-DatabaseTasks.env = ENV['ENV'] || 'development'
+DatabaseTasks.env = ENV['DATABASE_URL'] || 'development'
 DatabaseTasks.database_configuration = YAML.load(File.read(File.join(root, 'config/database.yml')))
 DatabaseTasks.db_dir = File.join root, 'db'
 DatabaseTasks.fixtures_path = File.join root, 'test/fixtures'
