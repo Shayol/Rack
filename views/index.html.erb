@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Codebreaker</title>
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+  </head>
+  <body>
+    <div id="container">
+      <h1>Codebreaker game.</h1>
+      <h2> Guess 4 numbers in range 1..6. You have one hint.</h2>
+      <form method="post" action="/new_game" id="new_game">
+          <input type="submit" value="new game">
+      </form>
+      <form method="post" action="/update_guess">
+        <input name="guess" type="text" autofocus>
+        <input type="submit" value="Guess!">
+      </form>
+      <% if current_game.won_lost == 'won' %>
+        <h2>You won!!! Enter your name to save results.</h2>
+        <form method="post" action="/create_user">
+          <input name="user" type="text">
+          <input type="submit" value="Submit">
+        </form>
+      <% elsif current_game.won_lost == 'lost' %>
+        <h2>You lost. Number of guesses were exceeded.</h2>
+      <% end %>
+      <p><%= current_game.guess %></p>
+      <a href="/get_hint">Use hint</a>
+      <div id="hint"><%= current_game.hint %></div>
+
+      <div class=statistics>
+      <% if statistics %>
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Attempts</th>
+                <th>Hint was used</th>
+              </tr>
+            </thead>
+            <tbody>
+            <% statistics.each do |stat|%>
+              <tr>
+                <td><%= stat.name %></td>
+                <td><%= stat.attempts %></td>
+                <td><%= stat.hintUsed %></td>
+              </tr>
+            <% end %>
+            </tbody>
+          </table>
+      <% end %>
+      </div>
+    <div class="clear"></div>
+    </div>
+  </body>
+</html>
