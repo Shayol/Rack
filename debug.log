@@ -1229,3 +1229,23 @@ D, [2015-05-31T14:46:13.652555 #23442] DEBUG -- :   [1m[35mSQL (0.8ms)[0m  IN
 D, [2015-05-31T14:46:13.670193 #23442] DEBUG -- :   [1m[36m (16.8ms)[0m  [1mCOMMIT[0m
 D, [2015-05-31T14:46:23.869765 #23442] DEBUG -- :   [1m[35mUser Load (1.0ms)[0m  SELECT  "users".* FROM "users"  ORDER BY "users"."attempts" ASC LIMIT 15
 D, [2015-05-31T14:46:24.802552 #23442] DEBUG -- :   [1m[36mUser Load (0.7ms)[0m  [1mSELECT  "users".* FROM "users"  ORDER BY "users"."attempts" ASC LIMIT 15[0m
+D, [2015-05-31T14:58:13.614479 #24245] DEBUG -- :   [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+D, [2015-05-31T14:58:13.619897 #24245] DEBUG -- :   [1m[35mSQL (0.5ms)[0m  INSERT INTO "games" ("guess") VALUES ($1) RETURNING "id"  [["guess", ""]]
+D, [2015-05-31T14:58:13.635396 #24245] DEBUG -- :   [1m[36m (14.9ms)[0m  [1mCOMMIT[0m
+D, [2015-05-31T14:58:24.597752 #24245] DEBUG -- :   [1m[35mUser Load (1.3ms)[0m  SELECT  "users".* FROM "users"  ORDER BY "users"."attempts" ASC LIMIT 15
+D, [2015-05-31T14:58:25.832550 #24245] DEBUG -- :   [1m[36mUser Load (0.5ms)[0m  [1mSELECT  "users".* FROM "users"  ORDER BY "users"."attempts" ASC LIMIT 15[0m
+D, [2015-05-31T14:58:28.906036 #24245] DEBUG -- :   [1m[35m (0.2ms)[0m  BEGIN
+D, [2015-05-31T14:58:28.910599 #24245] DEBUG -- :   [1m[36mSQL (0.4ms)[0m  [1mUPDATE "games" SET "guess" = $1 WHERE "games"."id" = $2[0m  [["guess", "5555: +\n\n "], ["id", 7]]
+D, [2015-05-31T14:58:28.957474 #24245] DEBUG -- :   [1m[35m (46.5ms)[0m  COMMIT
+D, [2015-05-31T14:58:28.966533 #24245] DEBUG -- :   [1m[36mUser Load (0.5ms)[0m  [1mSELECT  "users".* FROM "users"  ORDER BY "users"."attempts" ASC LIMIT 15[0m
+D, [2015-05-31T14:59:23.910192 #24598] DEBUG -- :   [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+D, [2015-05-31T14:59:23.916031 #24598] DEBUG -- :   [1m[35mSQL (0.5ms)[0m  INSERT INTO "games" ("guess") VALUES ($1) RETURNING "id"  [["guess", ""]]
+D, [2015-05-31T14:59:23.935316 #24598] DEBUG -- :   [1m[36m (18.7ms)[0m  [1mCOMMIT[0m
+D, [2015-05-31T15:04:42.841685 #24981] DEBUG -- :   [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+D, [2015-05-31T15:04:42.847256 #24981] DEBUG -- :   [1m[35mSQL (0.5ms)[0m  INSERT INTO "games" ("guess") VALUES ($1) RETURNING "id"  [["guess", ""]]
+D, [2015-05-31T15:04:42.856720 #24981] DEBUG -- :   [1m[36m (8.9ms)[0m  [1mCOMMIT[0m
+D, [2015-05-31T15:06:03.283586 #24981] DEBUG -- :   [1m[35mUser Load (0.9ms)[0m  SELECT  "users".* FROM "users"  ORDER BY "users"."attempts" ASC LIMIT 15
+D, [2015-05-31T15:06:06.939042 #24981] DEBUG -- :   [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+D, [2015-05-31T15:06:06.948047 #24981] DEBUG -- :   [1m[35mSQL (0.8ms)[0m  UPDATE "games" SET "guess" = $1 WHERE "games"."id" = $2  [["guess", "3333: \n\n "], ["id", 9]]
+D, [2015-05-31T15:06:06.990043 #24981] DEBUG -- :   [1m[36m (41.5ms)[0m  [1mCOMMIT[0m
+D, [2015-05-31T15:06:07.002159 #24981] DEBUG -- :   [1m[35mUser Load (0.6ms)[0m  SELECT  "users".* FROM "users"  ORDER BY "users"."attempts" ASC LIMIT 15
