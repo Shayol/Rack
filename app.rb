@@ -11,8 +11,8 @@ ActiveRecord::Base.logger = Logger.new('debug.log')
 DatabaseTasks.env = ENV['DATABASE_URL'] || 'development'
 DatabaseTasks.database_configuration = YAML.load(File.read(File.join(root, 'config/database.yml')))
 ActiveRecord::Base.configurations = DatabaseTasks.database_configuration
-ActiveRecord::Base.establish_connection DatabaseTasks.env.to_sym
-# ActiveRecord::Base.establish_connection(ENV['DATABASE_URL'])
+#ActiveRecord::Base.establish_connection DatabaseTasks.env.to_sym
+ActiveRecord::Base.establish_connection(ENV['DATABASE_URL'])
 
 # class User < ActiveRecord::Base
 # end
