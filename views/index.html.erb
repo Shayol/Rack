@@ -6,17 +6,37 @@
   </head>
   <body>
     <div id="container">
+
       <h1>Codebreaker game.</h1>
       <h2> Guess 4 numbers in range 1..6. You have one hint and ten chances.</h2>
+
       <form method="post" action="/new_game" id="new_game">
         <input type="submit" value="new game">
       </form>
+
       <form method="post" action="/update_guess">
         <input name="guess" type="text" autofocus>
         <input type="submit" value="Guess!">
       </form>
 
-      <div id="guess"><%= guess %></div>
+      <div id="guess">
+        <% @guesses.each do |k, v| %>
+          <p><%= k %>: <%= v %></p>
+
+            <% if v && v.match(/\+\+\+\+/) %>
+              <h2>You won!!! Enter your name to save results.</h2>
+
+              <form method="post" action="/create_user">
+                <input name="user" type="text">
+                <input type="submit" value="Submit">
+              </form>
+
+            <% elsif v.match(/lost/) %>
+              <h2>You lost. Number of guesses were exceeded.</h2>
+            <% end %>
+
+        <% end %>
+      </div>
 
       <div id="statistics">
         <h3>Statistics</h3>
@@ -31,17 +51,6 @@
 
       <a href="/get_hint">Use hint</a>
       <span ><%= hint %></span>
-      <% if guess %>
-        <% if guess.match(/\+\+\+\+/) %>
-          <h2>You won!!! Enter your name to save results.</h2>
-          <form method="post" action="/create_user">
-            <input name="user" type="text">
-            <input type="submit" value="Submit">
-          </form>
-        <% elsif guess.match(/lost/) %>
-          <h2>You lost. Number of guesses were exceeded.</h2>
-        <% end %>
-      <% end %>
 
     <div class="clear"></div>
     </div>
