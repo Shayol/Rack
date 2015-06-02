@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/Shayol/Codebreaker
-  revision: 4a5678f25c9114bad376dd0c1714c8c10d95f3e0
+  revision: 10d42514701709b6be3a18ac8bb42e906b3d58e3
   specs:
     codebreaker (0.1.0)
 
