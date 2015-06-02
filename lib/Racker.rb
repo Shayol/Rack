@@ -28,7 +28,6 @@ class Racker
     when "/" then Rack::Response.new(render("index.html.erb"))
     when "/update_guess"
       Rack::Response.new do |response|
-        restart_game(response) if @guesses.values.include? 'lost'
         compare(@request.params["guess"])
         response.redirect("/")
       end

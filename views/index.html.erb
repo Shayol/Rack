@@ -13,11 +13,12 @@
       <form method="post" action="/new_game" id="new_game">
         <input type="submit" value="new game">
       </form>
-
-      <form method="post" action="/update_guess">
-        <input name="guess" type="text" autofocus>
-        <input type="submit" value="Guess!">
-      </form>
+      <% if !@guesses.values.include?("lost") && !@guesses.values.include?("++++") %>
+        <form method="post" action="/update_guess">
+          <input name="guess" type="text" autofocus>
+          <input type="submit" value="Guess!">
+        </form>
+      <% end %>
 
       <div id="guess">
         <% @guesses.each do |k, v| %>
@@ -32,7 +33,7 @@
               </form>
 
             <% elsif v.match(/lost/) %>
-              <h2>You lost. Number of guesses were exceeded.</h2>
+              <h2>You lost. Number of allowed guesses were exceeded.</h2>
             <% end %>
 
         <% end %>
