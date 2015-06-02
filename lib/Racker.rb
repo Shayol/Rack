@@ -1,47 +1,53 @@
 class Racker
-  def initialize
-    clean_up_data_instances
-    @saved_game = Game.create(guess: '')
-    @game = Codebreaker::Game.new
-    @game.start
-  end
-
-  def clean_up_data_instances
-    @saved_game.destroy if @saved_game
-    @game=nil
-  end
-
-  def current_game
-    @saved_game
-  end
-
-  def call(env)
+  def initialize(env)
     @request = Rack::Request.new(env)
+    @request.session[:game] ||= new_game
+    @game = @request.session[:game]
+    puts "#{@game}"
+  end
+
+  def new_game
+    game = Codebreaker::Game.new
+    game.start
+    game
+  end
+
+  def self.call(env)
+    new(env).response.finish
+  end
+
+  def response
     case @request.path
     when "/" then Rack::Response.new(render("index.html.erb"))
     when "/update_guess"
       Rack::Response.new do |response|
-        current_game.update_attribute(:guess, current_game.guess << guess(@request.params["guess"]))
+        response.set_cookie("guess", compare(@request.params["guess"]))
+        #S@request.session[:game] = @game
         response.redirect("/")
       end
     when "/new_game"
       Rack::Response.new do |response|
-        initialize
+        response.set_cookie("guess", nil)
+        response.set_cookie("hint", nil)
+        @game.start
         response.redirect("/")
       end
     when "/get_hint"
     Rack::Response.new do |response|
       game_hint = @game.hintUsed ? "Already used your hint." : @game.hint
-      current_game.update_attribute(:hint, game_hint)
+      response.set_cookie("hint", game_hint)
       response.redirect("/")
     end
     when "/create_user"
       Rack::Response.new do |response|
-        create_user(@request.params["user"])
+        save(@request.params["user"])
+        response.set_cookie("guess", nil)
+        response.set_cookie("hint", nil)
+        @game.start
         response.redirect("/")
       end
     else Rack::Response.new("Not Found", 404)
-    end.finish
+    end
 end
 
   def render(template)
@@ -49,33 +55,45 @@ end
     ERB.new(File.read(path)).result(binding)
   end
 
-  def guess(answ=nil)
-    return unless answ && @game
-    answer = answ.chomp.downcase
-    message = ''
-    return message << answer << ': ' << "Something is wrong with your input" << "\n\n" unless @game.valid? answer
-    message << answer << ': ' << @game.compare(answer) << "\n\n "
-    won_lost
-    message
-    end
+  def guess
+    @request.cookies["guess"]
+  end
 
-  def won_lost
-    if @game.won
-      current_game.update_attribute(:won_lost, 'won')
-    elsif @game.turnsCount >= Codebreaker::Game::MAX_TURNS_COUNT
-      current_game.update_attribute(:won_lost, 'lost')
-      #clean_up_data_instances
+  def hint
+    @request.cookies["hint"]
+  end
+
+  def compare(answer)
+    answer = answer.chomp.downcase
+    if @game.valid? answer
+      if @game.turnsCount < Codebreaker::Game::MAX_TURNS_COUNT
+        result = @game.compare(answer)
+          answer << ": " << result
+      else
+        "You lost"
+      end
+    else
+      "Something is wrong with your input."
     end
   end
 
-  def create_user(name)
-    user = User.create(name: name, attempts: "{@game.turnsCount}", hintUsed: @game.hintUsed)
-    #statistics
-    clean_up_data_instances
+  def save(name)
+    begin
+      path = File.expand_path("../../data/data.txt", __FILE__)
+      File.open(path, 'a') do |f|
+        hintPenalty = @game.hintUsed ? 100 : 0
+        points = 1200 - @game.turnsCount*100 - hintPenalty
+        f.write("#{name} __________________ #{points}")
+      end
+    rescue
+      "Your result wasn't saved."
+    end
   end
 
   def statistics
-    User.all.order(:attempts).limit(15)
+    path = File.expand_path("../../data/data.txt", __FILE__)
+    File.readlines(path).each do |line|
+    end
   end
 
 end

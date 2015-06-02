@@ -1,10 +1,14 @@
 body {
   background-color: #C9D1A1;
-  font-family: ;
+  font-family: Verdana;
   font-size: 14px;
 }
 
-h1, h2, h3, tbody {
+* {
+  margin-top: 20px;
+}
+
+h1, h2, h3 {
   text-align: center;
 }
 
@@ -18,21 +22,25 @@ h1, h2, h3, tbody {
   margin-top: 30px;
 }
 
-.statistics {
-border: solid 1px green;
-float:right;
+span {
+  font-size: 16px;
+  padding: 10px;
+  font-color: #D9A2DE;
+}
+#statistics {
+  float:right;
+}
+
+#stat_data {
+  float:right;
+  border: solid 1px green;
+  padding: 10px;
+  margin: 20px;
+  background: #D9A2DE;
 }
 
 #new_game {
   float: right;
-  button {
-    color: yellow;
-  }
-}
-
-#hint {
-  font-size: 16px;
-  font-family: Verdana;
 }
 
 .clear {

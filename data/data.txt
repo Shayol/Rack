@@ -1,0 +1,2 @@
+user                 0
+namee                 300.
