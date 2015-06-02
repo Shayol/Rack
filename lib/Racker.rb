@@ -14,8 +14,8 @@ class Racker
   end
 
   def restart_game(response)
-    response.set_cookie("hint", nil)
-    @request.session[:guesses] = {}
+    response.delete_cookie("hint")
+    @request.session.delete("guesses")
     @game.start
   end
 
