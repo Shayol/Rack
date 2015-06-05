@@ -12,7 +12,7 @@
       <h1>Codebreaker game.</h1>
       <h2> Guess 4 numbers in range 1..6. You have one hint and ten chances.</h2>
 
-      <form method="post" action="/new_game" id="new_game">
+      <form ng-submit=newGame() id="new_game">
         <input type="submit" value="new game">
       </form>
 

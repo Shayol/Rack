@@ -13,13 +13,7 @@ class Racker
     game
   end
 
-  # def game
-  #   @request.session[:game]
-  # end
-
-  def restart_game(response)
-    response.delete_cookie("hint")
-    @request.session.delete("guesses")
+  def restart_game
     @game.start
   end
 
@@ -32,10 +26,8 @@ class Racker
     when "/" then Rack::Response.new(render("index.html.erb"))
     when "/update_guess" then compare
     when "/new_game"
-      Rack::Response.new do |response|
-        restart_game(response)
-        response.redirect("/")
-      end
+        restart_game
+        Rack::Response.new({}.to_json)
     when "/get_hint" then hint
     when "/create_user"
       Rack::Response.new do |response|

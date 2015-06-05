@@ -57,17 +57,28 @@ racker.controller('RackerController', ['$scope', '$http', function($scope, $http
         $scope.update_guess = '';
       }).
       error(function(data, status, headers, config) {
-        console.log("update_guess returned error");
+        console.log("Update_guess returned error");
       });
   };
 
   $scope.getHint = function() {
-  $http.get('/get_hint').
+  $http.get('/get_hint', {guess: $scope.update_guess}).
     success(function(data, status, headers, config) {
-      $scope.hint = data.hint
+      $scope.hint = data.hint;
     }).
     error(function(data, status, headers, config) {
-      console.log("mistake while waiting for hint")
+      console.log("Mistake while waiting for hint");
+    });
+  };
+
+  $scope.newGame = function() {
+  $http.post('/new_game', {}).
+    success(function(data, status, headers, config) {
+      $scope.hint = '';
+      $scope.guesses = [];
+    }).
+    error(function(data, status, headers, config) {
+      console.log("New game wasn't started.")
     });
   };
 
