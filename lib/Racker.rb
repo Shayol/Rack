@@ -2,11 +2,9 @@ require 'json'
 
 class Racker
   def initialize(env)
-    env['CONTENT_TYPE']="application/json"
     @request = Rack::Request.new(env)
-    @env = env
-    # @request.session[:game] ||= new_game
-    # @game = @request.session[:game]
+    @request.session[:game] ||= new_game
+    @game = @request.session[:game]
   end
 
   def new_game
@@ -32,18 +30,13 @@ class Racker
   def response
     case @request.path
     when "/" then Rack::Response.new(render("index.html.erb"))
-    when "/update_guess" then guess
+    when "/update_guess" then compare
     when "/new_game"
       Rack::Response.new do |response|
         restart_game(response)
         response.redirect("/")
       end
-    when "/get_hint"
-    Rack::Response.new do |response|
-      game_hint = @game.hintUsed ? "Already used your hint." : @game.hint
-      response.set_cookie("hint", game_hint)
-      response.redirect("/")
-    end
+    when "/get_hint" then hint
     when "/create_user"
       Rack::Response.new do |response|
         save(@request.params["user"])
@@ -60,31 +53,30 @@ end
   end
 
   def hint
-    @request.cookies["hint"]
+    game_hint = @game.hintUsed ? "Already used your hint." : @game.hint
+    Rack::Response.new({ hint: game_hint }.to_json)
   end
 
-  def guess
-    code = @request.params['guess']
-    # result = @game.compare(code)
-    # Rack::Response.new({ code: code, result: result }.to_json)
-    Rack::Response.new({ code: "#{@env.inspect}", result: "+++-" }.to_json)
-  end
+  # def guess
+  #   code = @request.params['guess']
+  #   result = @game.compare(code)
+  #   Rack::Response.new({ code: code, result: result }.to_json)
+  # end
 
-  def compare(answer)
-    answer = answer.chomp.downcase
+  def compare
+    answer = @request.params['guess'].chomp.downcase
     if @game.valid? answer
       if @game.turnsCount < -1 + Codebreaker::Game::MAX_TURNS_COUNT
         result = @game.compare(answer)
-          @guesses[answer] = result
       elsif @game.turnsCount == Codebreaker::Game::MAX_TURNS_COUNT && @game.compare(answer) == "++++"
-        @guesses[answer] = "++++"
+        result = "++++"
       else
-        @guesses[answer] = "lost"
+        result = "lost"
       end
     else
-      @guesses[answer] = "Something is wrong with your input."
+      result = "Something is wrong with your input."
     end
-    @guesses
+    Rack::Response.new({ code: answer, result: result }.to_json)
   end
 
   def save(name)
