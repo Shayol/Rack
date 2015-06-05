@@ -1,10 +1,12 @@
+require 'json'
+
 class Racker
   def initialize(env)
+    env['CONTENT_TYPE']="application/json"
     @request = Rack::Request.new(env)
-    @request.session[:game] ||= new_game
-    @game = @request.session[:game]
-    @request.session[:guesses] ||= {}
-    @guesses = @request.session[:guesses]
+    @env = env
+    # @request.session[:game] ||= new_game
+    # @game = @request.session[:game]
   end
 
   def new_game
@@ -12,6 +14,10 @@ class Racker
     game.start
     game
   end
+
+  # def game
+  #   @request.session[:game]
+  # end
 
   def restart_game(response)
     response.delete_cookie("hint")
@@ -26,11 +32,7 @@ class Racker
   def response
     case @request.path
     when "/" then Rack::Response.new(render("index.html.erb"))
-    when "/update_guess"
-      Rack::Response.new do |response|
-        compare(@request.params["guess"])
-        response.redirect("/")
-      end
+    when "/update_guess" then guess
     when "/new_game"
       Rack::Response.new do |response|
         restart_game(response)
@@ -59,6 +61,13 @@ end
 
   def hint
     @request.cookies["hint"]
+  end
+
+  def guess
+    code = @request.params['guess']
+    # result = @game.compare(code)
+    # Rack::Response.new({ code: code, result: result }.to_json)
+    Rack::Response.new({ code: "#{@env.inspect}", result: "+++-" }.to_json)
   end
 
   def compare(answer)

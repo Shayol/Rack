@@ -3,8 +3,10 @@
   <head>
     <title>Codebreaker</title>
     <link rel="stylesheet" href="/css/style.css" type="text/css">
+    <script src="/js/angular.min.js"></script>
+    <script src="/js/app.js"></script>
   </head>
-  <body>
+  <body ng-app="Racker" ng-controller="RackerController">
     <div id="container">
 
       <h1>Codebreaker game.</h1>
@@ -13,31 +15,18 @@
       <form method="post" action="/new_game" id="new_game">
         <input type="submit" value="new game">
       </form>
-      <% if !@guesses.values.include?("lost") && !@guesses.values.include?("++++") %>
-        <form method="post" action="/update_guess">
-          <input name="guess" type="text" autofocus>
+
+        <form ng-submit=guess()>
+          <input ng-model="update_guess" type="text" autofocus>
           <input type="submit" value="Guess!">
         </form>
-      <% end %>
 
       <div id="guess">
-        <% @guesses.each do |k, v| %>
-          <p><%= k %>: <%= v %></p>
-
-            <% if v && v.match(/\+\+\+\+/) %>
-              <h2>You won!!! Enter your name to save results.</h2>
-
-              <form method="post" action="/create_user">
-                <input name="user" type="text">
-                <input type="submit" value="Submit">
-              </form>
-
-            <% elsif v.match(/lost/) %>
-              <h2>You lost. Number of allowed guesses were exceeded.</h2>
-            <% end %>
-
-        <% end %>
+        <div ng-repeat="guess in guesses">
+          <p>{{guess.code}}: {{guess.result}}</p>
+       </div>
       </div>
+
 
       <div id="statistics">
         <h3>Statistics</h3>
