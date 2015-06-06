@@ -25,16 +25,13 @@ class Racker
     case @request.path
     when "/" then Rack::Response.new(render("index.html.erb"))
     when "/update_guess" then compare
-    when "/new_game"
-        restart_game
-        Rack::Response.new({}.to_json)
     when "/get_hint" then hint
+    when "/new_game"
+      restart_game
+      Rack::Response.new({}.to_json)
     when "/create_user"
-      Rack::Response.new do |response|
-        save(@request.params["user"])
-        restart_game(response)
-        response.redirect("/")
-      end
+      save(@request.params["user"])
+      Rack::Response.new ({}.to_json)
     else Rack::Response.new("Not Found", 404)
     end
 end
@@ -48,12 +45,6 @@ end
     game_hint = @game.hintUsed ? "Already used your hint." : @game.hint
     Rack::Response.new({ hint: game_hint }.to_json)
   end
-
-  # def guess
-  #   code = @request.params['guess']
-  #   result = @game.compare(code)
-  #   Rack::Response.new({ code: code, result: result }.to_json)
-  # end
 
   def compare
     answer = @request.params['guess'].chomp.downcase

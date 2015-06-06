@@ -12,14 +12,29 @@
       <h1>Codebreaker game.</h1>
       <h2> Guess 4 numbers in range 1..6. You have one hint and ten chances.</h2>
 
-      <form ng-submit=newGame() id="new_game">
-        <input type="submit" value="new game">
-      </form>
-
-        <form ng-submit=guess()>
-          <input ng-model="update_guess" type="text" autofocus>
-          <input type="submit" value="Guess!">
+        <form ng-submit=newGame() id="new_game" >
+          <input type="submit" value="new game">
         </form>
+
+
+        <div ng-show="gameProgressing">
+          <form ng-submit=guess()>
+            <input ng-model="update_guess" type="text" autofocus>
+            <input type="submit" value="Guess!">
+          </form>
+        </div>
+
+        <div ng-show="won">
+          <p>You won!!! Enter your name to save results.</p>
+          <form ng-submit=createUser()>
+            <input ng-model="user" type="text" autofocus>
+            <input type="submit" value="Submit">
+          </form>
+        </div>
+
+        <div ng-show="lost">
+          <p> You lost. Press button "New game" to play again.</p>
+        </div>
 
       <div id="guess">
         <div ng-repeat="guess in guesses">

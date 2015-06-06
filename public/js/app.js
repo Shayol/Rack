@@ -49,16 +49,38 @@ racker.controller('RackerController', ['$scope', '$http', function($scope, $http
   $scope.guesses = [];
   $scope.update_guess = '';
   $scope.hint = '';
-  $scope.guess = function() {
+  $scope.user = '';
+  $scope.gameProgressing = true;
+  $scope.won = false;
+  $scope.lost = false;
 
+  $scope.guess = function() {
     $http.post('/update_guess', {guess: $scope.update_guess}).
       success(function(data, status, headers, config) {
         $scope.guesses.push(data);
+        if(data.result == "++++" || data.result == "lost") {
+          $scope.gameProgressing = false;
+          (data.result == "++++") ? $scope.won = true : $scope.lost = true;
+        }
         $scope.update_guess = '';
       }).
       error(function(data, status, headers, config) {
         console.log("Update_guess returned error");
       });
+
+  };
+
+  $scope.createUser = function() {
+    $http.post('/create_user', {user: $scope.user}).
+      success(function(data, status, headers, config) {
+         $scope.won = false;
+         $scope.user = '';
+         $scope.newGame();
+      }).
+      error(function(data, status, headers, config) {
+        console.log("CreateUser returned error");
+      });
+
   };
 
   $scope.getHint = function() {
@@ -76,6 +98,7 @@ racker.controller('RackerController', ['$scope', '$http', function($scope, $http
     success(function(data, status, headers, config) {
       $scope.hint = '';
       $scope.guesses = [];
+      $scope.gameProgressing = true;
     }).
     error(function(data, status, headers, config) {
       console.log("New game wasn't started.")
