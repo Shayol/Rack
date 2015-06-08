@@ -99,6 +99,8 @@ racker.controller('RackerController', ['$scope', '$http', function($scope, $http
       $scope.hint = '';
       $scope.guesses = [];
       $scope.gameProgressing = true;
+      $scope.won = false;
+      $scope.lost = false;
     }).
     error(function(data, status, headers, config) {
       console.log("New game wasn't started.")

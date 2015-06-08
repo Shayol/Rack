@@ -46,9 +46,11 @@
       <div id="statistics">
         <h3>Statistics</h3>
           <div id="stat_data">
+          <table>
             <% statistics.each do |line| %>
-              <p><%= line.chomp %></p>
+              <tr><td><%= line.keys[0] %></td><td><%= line.values[0] %></td></tr>
             <% end %>
+          </table>
           </div>
       </div>
 

@@ -68,7 +68,7 @@ end
       File.open(path, 'a') do |f|
         hintPenalty = @game.hintUsed ? 100 : 0
         points = 1200 - @game.turnsCount*100 - hintPenalty
-        f.write("#{name} __________________ #{points}\n")
+        f.write("'#{name}' => '#{points}'\n")
       end
     rescue
       "Your result wasn't saved."
@@ -77,7 +77,9 @@ end
 
   def statistics
     path = File.expand_path("../../data/data.txt", __FILE__)
-    File.readlines(path).each do |line|
+    stat = File.readlines(path)
+    result = stat.map do |line|
+      eval('{' + "#{line.chomp}" +'}')
     end
   end
 
