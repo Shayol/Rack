@@ -46,9 +46,15 @@
       <div id="statistics">
         <h3>Statistics</h3>
           <div id="stat_data">
-            <div ng-repeat="result in results">
-              <p>{{result.name}}{{result.points}}</p>
-            </div>
+          <table>
+            <thead>
+              <th>Name</th>
+              <th>Points</th>
+            </thead>
+              <tr ng-repeat="result in results">
+                <td>{{result.name}}</td><td>{{result.points}}</td>
+              </tr>
+          </table>
           </div>
       </div>
 

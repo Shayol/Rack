@@ -83,10 +83,6 @@ end
       eval('{' + "#{line.chomp}" +'}')
     end
     result = result.sort_by{|k| k['points']}.reverse
-    # stat = result.map do |line|
-    #   line.to_json
-    # end
-    # result_json = stat.to_json
     Rack::Response.new({players: result}.to_json)
   end
 
