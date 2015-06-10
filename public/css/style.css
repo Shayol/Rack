@@ -32,7 +32,6 @@ span {
 }
 
 #stat_data {
-  float:right;
   border: solid 1px green;
   padding: 10px;
   margin-left: 20px;
