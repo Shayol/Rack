@@ -73,6 +73,7 @@ racker.controller('RackerController', ['$scope', '$http', function($scope, $http
   $scope.createUser = function() {
     $http.post('/create_user', {user: $scope.user}).
       success(function(data, status, headers, config) {
+         $scope.results = data.players;
          $scope.won = false;
          $scope.user = '';
          $scope.newGame();
@@ -106,6 +107,14 @@ racker.controller('RackerController', ['$scope', '$http', function($scope, $http
       console.log("New game wasn't started.")
     });
   };
+
+  $http.get('/get_stat', {}).
+    success(function(data, status, headers, config) {
+      $scope.results = data.players;
+    }).
+    error(function(data, status, headers, config) {
+      console.log("Mistake while waiting for stat");
+    });
 
 
 }]);

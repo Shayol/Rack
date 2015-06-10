@@ -31,7 +31,8 @@ class Racker
       Rack::Response.new({}.to_json)
     when "/create_user"
       save(@request.params["user"])
-      Rack::Response.new ({}.to_json)
+      statistics
+    when "/get_stat" then statistics
     else Rack::Response.new("Not Found", 404)
     end
 end
@@ -81,7 +82,12 @@ end
     result = stat.map do |line|
       eval('{' + "#{line.chomp}" +'}')
     end
-    result = result.sort_by{|k| k["points"]}.reverse
+    result = result.sort_by{|k| k['points']}.reverse
+    # stat = result.map do |line|
+    #   line.to_json
+    # end
+    # result_json = stat.to_json
+    Rack::Response.new({players: result}.to_json)
   end
 
 end

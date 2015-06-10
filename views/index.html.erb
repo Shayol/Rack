@@ -46,11 +46,9 @@
       <div id="statistics">
         <h3>Statistics</h3>
           <div id="stat_data">
-          <table>
-            <% statistics.each do |line| %>
-              <tr><td><%= line['name'] %></td><td><%= line['points'] %></td></tr>
-            <% end %>
-          </table>
+            <div ng-repeat="result in results">
+              <p>{{result.name}}{{result.points}}</p>
+            </div>
           </div>
       </div>
 

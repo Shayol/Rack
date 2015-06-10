@@ -2,3 +2,4 @@
 'name' => 'chhuu', 'points' => '300'
 'name' => 'ho', 'points' => '500'
 'name' => 'whoaa', 'points' => '500'
+'name' => 'oooya', 'points' => '300'
