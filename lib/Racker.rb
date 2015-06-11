@@ -69,7 +69,7 @@ end
       File.open(path, 'a') do |f|
         hintPenalty = @game.hintUsed ? 100 : 0
         points = 1200 - @game.turnsCount*100 - hintPenalty
-        f.write("'name' => '#{name}', 'points' => '#{points}'\n")
+        f.write("{'name' => '#{name}', 'points' => '#{points}'}\n")
       end
     rescue
       "Your result wasn't saved."
@@ -80,7 +80,7 @@ end
     path = File.expand_path("../../data/data.txt", __FILE__)
     stat = File.readlines(path)
     result = stat.map do |line|
-      eval('{' + "#{line.chomp}" +'}')
+      eval(line.chomp)
     end
     result = result.sort_by{|k| k['points']}.reverse
     Rack::Response.new({players: result}.to_json)
